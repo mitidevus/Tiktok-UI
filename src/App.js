@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Content from './Content'
 
 function App() {
   return (
