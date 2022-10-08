@@ -22,7 +22,7 @@ function Button({
     ...passProps
 }) {
     // Default props are set to be 'false'
-    let Comp = 'button';
+    let Comp = 'button'; // Default component is button
     const props = {
         onClick,
         ...passProps,
