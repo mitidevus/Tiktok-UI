@@ -3,9 +3,7 @@ import { useState, forwardRef } from 'react'; // Để biết ref của image �
 import images from '~/assets/images';
 import styles from './Image.module.scss';
 
-console.log(images.logo);
-
-function Image({ src, alt, className, fallback: customFallback = images.fallback, ...props }, ref) {
+function Image({ src, alt, className, fallback: customFallback = images.noImage, ...props }, ref) {
     // Fallback là cái thay thể khi lỗi
     const [fallback, setFallBack] = useState('');
 
