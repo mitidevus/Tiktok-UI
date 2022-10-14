@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 import AccountItem from '~/components/AccountItem';
 import { SearchIcon } from '~/components/Icons';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
+import { useDebounce } from '~/hooks';
 import styles from './Search.module.scss';
 
 const cx = classNames.bind(styles);
@@ -16,17 +17,19 @@ function Search() {
     const [showResult, setShowResult] = useState(true); // Khi focus vào ô search thì mới show, blur ra ngoài thì ẩn mặc dù có kết quả tìm kiếm
     const [loading, setLoading] = useState(false);
 
+    const debounced = useDebounce(searchValue, 500); // Khi ngừng gõ 500ms thì debounced mới được update bằng giá trị mới nhất của searchValue
+
     const inputRef = useRef(); // Dùng useRef() để lấy thẻ <input>
 
     useEffect(() => {
-        if (!searchValue.trim()) {
+        if (!debounced.trim()) {
             setSearchResult([]);
             return;
         }
 
         setLoading(true);
 
-        fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(searchValue)}&type=less`) // encodeURIComponent() để encode các ký tự đặc biệt như: dấu cách, #, ?, ...
+        fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debounced)}&type=less`) // encodeURIComponent() để encode các ký tự đặc biệt như: dấu cách, #, ?, ...
             .then((res) => res.json())
             .then((res) => {
                 setSearchResult(res.data);
@@ -35,7 +38,7 @@ function Search() {
             .catch(() => {
                 setLoading(false);
             });
-    }, [searchValue]);
+    }, [debounced]);
 
     const handleClear = () => {
         setSearchValue('');
@@ -74,11 +77,11 @@ function Search() {
                     onFocus={() => setShowResult(true)}
                 />
 
-                {/* {!!searchValue && !loading && (
+                {!!searchValue && !loading && (
                     <button className={cx('clear')} onClick={handleClear}>
                         <FontAwesomeIcon icon={faCircleXmark} />
                     </button>
-                )} */}
+                )}
                 {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
 
                 <button className={cx('search-btn')}>
