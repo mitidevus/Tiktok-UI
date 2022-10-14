@@ -17,8 +17,9 @@
         height: 100%;
         color: var(--black);
         font-size: 1.6rem;
+        caret-color: var(--primary); // caret-color nghĩa là màu của con trỏ nháy trong ô input
         background-color: transparent;
-        caret-color: var(--primary);
+        font-family: var(--font-family);
     }
 
     input:not(:placeholder-shown) ~ .search-btn {
